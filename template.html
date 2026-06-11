@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#003DA5">
+<title>Llantas Agrícolas · Bodega MX</title>
+<style>
+:root{--azul:#003DA5;--azul-med:#1B4FD8;--azul-claro:#E8F0FF;--azul-borde:#C5D5F5;--amarillo:#F7C200;--negro:#111111;--blanco:#FFFFFF;--gris-bg:#F0F4F8;--gris-linea:#E2E8F0;--gris-texto:#64748B;--verde:#0E7A3A;--verde-bg:#E8F5EE;--rojo:#C0392B;--rojo-bg:#FDECEA;--radio:12px;--radio-sm:7px;--sombra:0 1px 6px rgba(0,61,165,0.08);--sombra-md:0 4px 18px rgba(0,61,165,0.14);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--gris-bg);color:var(--negro);min-height:100vh;-webkit-font-smoothing:antialiased;}
+.header{background:linear-gradient(135deg,#003DA5 0%,#0052CC 60%,#1B4FD8 100%);position:sticky;top:0;z-index:200;box-shadow:0 3px 16px rgba(0,0,0,0.35);}
+.header-inner{display:flex;align-items:center;padding:13px 16px;gap:12px;}
+.header-logo{background:var(--blanco);color:var(--azul);font-weight:900;font-size:12px;letter-spacing:1px;text-transform:uppercase;padding:5px 11px;border-radius:5px;white-space:nowrap;flex-shrink:0;}
+.header-text{flex:1;min-width:0;}
+.header-title{color:var(--blanco);font-size:16px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.header-sub{color:rgba(255,255,255,0.65);font-size:11px;margin-top:1px;}
+.header-pill{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.35);color:var(--blanco);font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+.stats-bar{background:rgba(0,0,0,0.25);display:flex;border-top:1px solid rgba(255,255,255,0.1);}
+.stat-item{flex:1;text-align:center;padding:8px 4px;border-right:1px solid rgba(255,255,255,0.1);}
+.stat-item:last-child{border-right:none;}
+.stat-num{display:block;font-size:19px;font-weight:800;color:var(--amarillo);line-height:1;}
+.stat-lbl{display:block;font-size:9px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.6px;margin-top:2px;}
+.filtros-panel{background:var(--blanco);border-bottom:3px solid var(--azul);padding:13px 14px 11px;box-shadow:var(--sombra-md);}
+.search-wrap{position:relative;margin-bottom:11px;}
+.search-wrap input{width:100%;padding:11px 14px 11px 42px;border:2px solid var(--gris-linea);border-radius:var(--radio);font-size:15px;color:var(--negro);background:var(--gris-bg);outline:none;-webkit-appearance:none;}
+.search-wrap input:focus{border-color:var(--azul);background:var(--blanco);}
+.search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;}
+.filtro-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--gris-texto);margin-bottom:6px;display:block;}
+.rin-chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;-ms-overflow-style:none;scrollbar-width:none;}
+.rin-chips::-webkit-scrollbar{display:none;}
+.chip-rin{flex-shrink:0;padding:7px 13px;border-radius:20px;border:1.5px solid var(--gris-linea);background:var(--blanco);font-size:13px;font-weight:700;color:var(--gris-texto);cursor:pointer;transition:all 0.15s;-webkit-tap-highlight-color:transparent;}
+.chip-rin.active{background:var(--azul);color:var(--blanco);border-color:var(--azul);}
+.filtros-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+.sel-wrap{position:relative;}
+.sel-wrap select{width:100%;padding:9px 26px 9px 10px;border:1.5px solid var(--gris-linea);border-radius:var(--radio-sm);font-size:13px;color:var(--negro);background:var(--gris-bg);outline:none;appearance:none;-webkit-appearance:none;}
+.sel-wrap select:focus{border-color:var(--azul);background:var(--blanco);}
+.sel-wrap::after{content:"▾";position:absolute;right:8px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--gris-texto);font-size:11px;}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;margin-top:10px;}
+.toggle-label{font-size:13px;font-weight:600;color:var(--negro);}
+.toggle-sub{font-size:11px;color:var(--gris-texto);}
+.toggle-sw{position:relative;width:44px;height:24px;flex-shrink:0;}
+.toggle-sw input{opacity:0;width:0;height:0;position:absolute;}
+.toggle-track{position:absolute;inset:0;background:var(--gris-linea);border-radius:12px;cursor:pointer;transition:background 0.2s;}
+.toggle-sw input:checked ~ .toggle-track{background:var(--verde);}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:18px;height:18px;background:var(--blanco);border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,0.25);transition:left 0.2s;pointer-events:none;}
+.toggle-sw input:checked ~ .toggle-track ~ .toggle-thumb{left:23px;}
+.result-bar{padding:8px 14px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--gris-texto);background:var(--blanco);border-bottom:1px solid var(--gris-linea);}
+.result-bar strong{color:var(--negro);font-size:13px;}
+.btn-clear-all{background:none;border:none;color:var(--rojo);font-size:12px;font-weight:700;cursor:pointer;padding:4px 6px;}
+.cards-wrap{padding:10px 12px 80px;display:flex;flex-direction:column;gap:10px;}
+.card{background:var(--blanco);border-radius:var(--radio);box-shadow:var(--sombra);overflow:hidden;border-left:5px solid var(--gris-linea);}
+.card.disponible{border-left-color:var(--verde);}
+.card.no-disp{border-left-color:var(--gris-linea);opacity:0.55;}
+.card-header{background:var(--azul-claro);border-bottom:1px solid var(--azul-borde);padding:9px 13px;display:flex;align-items:center;gap:8px;}
+.rin-badge{background:var(--azul);color:var(--blanco);font-size:11px;font-weight:900;padding:4px 9px;border-radius:4px;white-space:nowrap;flex-shrink:0;letter-spacing:0.5px;}
+.card-medidas{flex:1;min-width:0;}
+.medida-radial{font-size:16px;font-weight:800;color:var(--negro);}
+.medida-equiv{font-size:14px;font-weight:700;color:var(--azul-med);margin-top:3px;}
+.inv-badge{flex-shrink:0;display:inline-flex;flex-direction:column;align-items:center;gap:1px;padding:5px 10px;border-radius:8px;font-weight:700;min-width:68px;text-align:center;}
+.inv-badge.disp{background:var(--verde-bg);color:var(--verde);}
+.inv-badge.nodisp{background:var(--rojo-bg);color:var(--rojo);}
+.inv-label{font-size:9px;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;opacity:0.75;}
+.inv-num{font-size:15px;font-weight:900;line-height:1.1;}
+.card-precios{padding:10px 13px 8px;display:flex;align-items:center;gap:0;border-bottom:1px solid var(--gris-linea);}
+.precio-bloque{flex:1;display:flex;flex-direction:column;gap:1px;}
+.precio-tag{font-size:9px;text-transform:uppercase;letter-spacing:0.5px;color:var(--gris-texto);font-weight:600;}
+.precio-val{font-size:18px;font-weight:900;color:var(--negro);letter-spacing:-0.5px;line-height:1;}
+.precio-oficial{font-size:9px;color:var(--verde);font-weight:700;margin-top:1px;}
+.precio-sin{font-size:13px;color:#bbb;font-style:italic;}
+.precio-sep{width:1px;background:var(--gris-linea);margin:0 12px;height:36px;align-self:center;}
+.precio-sug .precio-val{font-size:15px;color:var(--verde);}
+.card-info{padding:7px 13px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.modelo-text{font-size:12px;font-weight:600;color:var(--negro);}
+.marca-chip{font-size:10px;font-weight:800;padding:2px 8px;border-radius:3px;}
+.marca-m{background:var(--amarillo);color:var(--negro);}
+.marca-k{background:var(--azul-claro);color:var(--azul);}
+.marca-o{background:var(--gris-linea);color:var(--gris-texto);}
+.card-footer{border-top:1px solid var(--gris-linea);padding:8px 13px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+.codigos{font-size:11px;color:#888;font-family:monospace;letter-spacing:0.2px;}
+.cod-val{color:var(--negro);font-weight:700;}
+.btns-footer{display:flex;gap:6px;align-items:center;}
+.btn-ficha{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:20px;background:var(--azul);color:var(--blanco);font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:background 0.15s;border:none;cursor:pointer;}
+.btn-ficha:active{background:#002a7a;}
+.btn-ficha-dis{font-size:11px;color:#ccc;padding:6px 0;}
+.btn-wha{display:inline-flex;align-items:center;gap:4px;padding:6px 11px;border-radius:20px;background:#25D366;color:var(--blanco);font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;-webkit-tap-highlight-color:transparent;transition:background 0.15s;}
+.btn-wha:active{background:#1da851;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;align-items:flex-end;justify-content:center;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--blanco);width:100%;max-width:480px;border-radius:18px 18px 0 0;padding:20px 18px 32px;box-shadow:0 -4px 30px rgba(0,0,0,0.2);max-height:92vh;overflow-y:auto;}
+.modal-handle{width:40px;height:4px;background:#ddd;border-radius:2px;margin:0 auto 14px;}
+.modal-title{font-size:16px;font-weight:800;color:var(--negro);margin-bottom:3px;}
+.modal-sub{font-size:12px;color:var(--gris-texto);margin-bottom:14px;}
+.preview-card{background:linear-gradient(135deg,#003DA5,#1B4FD8);border-radius:12px;padding:16px;color:var(--blanco);margin-bottom:16px;}
+.prev-brand{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:0.75;margin-bottom:5px;}
+.prev-medida{font-size:20px;font-weight:900;letter-spacing:-0.5px;}
+.prev-equiv{font-size:13px;opacity:0.8;margin-top:2px;}
+.prev-row{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap;}
+.prev-item{display:flex;flex-direction:column;gap:2px;}
+.prev-lbl{font-size:9px;text-transform:uppercase;letter-spacing:0.5px;opacity:0.65;}
+.prev-val{font-size:14px;font-weight:800;}
+.prev-sep{width:1px;background:rgba(255,255,255,0.2);}
+.prev-footer{margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.2);font-size:11px;opacity:0.8;}
+.prev-link{color:#90CAF9;font-size:10px;margin-top:3px;word-break:break-all;}
+.form-group{margin-bottom:11px;}
+.form-group label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;color:var(--gris-texto);margin-bottom:4px;}
+.form-group input{width:100%;padding:10px 12px;border:1.5px solid var(--gris-linea);border-radius:var(--radio-sm);font-size:14px;color:var(--negro);outline:none;-webkit-appearance:none;}
+.form-group input:focus{border-color:var(--azul);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.btn-abrir-wha{width:100%;padding:14px;border-radius:var(--radio);border:none;background:#25D366;color:var(--blanco);font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;}
+.btn-abrir-wha:active{background:#1da851;}
+.wha-hint{font-size:11px;color:var(--gris-texto);text-align:center;margin-top:6px;line-height:1.4;}
+.btn-cancelar{width:100%;padding:11px;border-radius:var(--radio);border:1.5px solid var(--gris-linea);background:var(--blanco);color:var(--gris-texto);font-size:14px;font-weight:600;cursor:pointer;margin-top:8px;}
+.empty-state{text-align:center;padding:60px 20px;color:var(--gris-texto);}
+.empty-icon{font-size:48px;margin-bottom:12px;}
+.empty-title{font-size:17px;font-weight:700;color:var(--negro);margin-bottom:6px;}
+@media(min-width:700px){.modal-overlay{align-items:center;}.modal-box{border-radius:18px;margin:20px;}.cards-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-bottom:40px;}}
+@media(min-width:1100px){.cards-wrap{grid-template-columns:1fr 1fr 1fr;}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-inner">
+    <div class="header-logo">Michelin · Kleber</div>
+    <div class="header-text">
+      <div class="header-title">Inventario Agrícola · Bodega MX</div>
+      <div class="header-sub">Lista de precios Feb 2026 · USD · Beyond Road AG</div>
+    </div>
+    <div class="header-pill">✓ Actualizado</div>
+  </div>
+  <div class="stats-bar">
+    <div class="stat-item"><span class="stat-num" id="stat-stock">__STOCK__</span><span class="stat-lbl">Con stock</span></div>
+    <div class="stat-item"><span class="stat-num" id="stat-visible">__TOTAL__</span><span class="stat-lbl">Mostrando</span></div>
+    <div class="stat-item"><span class="stat-num" id="stat-total">__TOTAL__</span><span class="stat-lbl">Total refs</span></div>
+  </div>
+</div>
+<div class="filtros-panel">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="f-texto" placeholder="Buscar medida, modelo, CAI, equivalente…" oninput="F.onTexto()" autocomplete="off" autocorrect="off" spellcheck="false">
+  </div>
+  <span class="filtro-label">Filtrar por RIN</span>
+  <div class="rin-chips" id="rin-chips"></div>
+  <div class="filtros-row" style="margin-top:10px;">
+    <div class="sel-wrap"><select id="f-medida" onchange="F.onMedida()"><option value="">Medida radial</option></select></div>
+    <div class="sel-wrap"><select id="f-equiv" onchange="F.onEquiv()"><option value="">Medida equivalente</option></select></div>
+  </div>
+  <div class="filtros-row" style="margin-top:8px;">
+    <div class="sel-wrap"><select id="f-marca" onchange="F.render()"><option value="">Marca</option><option value="MICHELIN">MICHELIN</option><option value="KLEBER">KLEBER</option></select></div>
+    <div class="sel-wrap"><select id="f-modelo" onchange="F.render()"><option value="">Modelo / Gama</option></select></div>
+  </div>
+  <div class="toggle-row">
+    <div><div class="toggle-label">Solo con stock disponible</div><div class="toggle-sub" id="stock-lbl">__STOCK__ referencias con existencia</div></div>
+    <label class="toggle-sw"><input type="checkbox" id="f-solo-disp" onchange="F.render()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+  </div>
+</div>
+<div class="result-bar">
+  <span>Mostrando <strong id="res-num">__TOTAL__</strong> referencias</span>
+  <button class="btn-clear-all" onclick="F.limpiar()">✕ Limpiar filtros</button>
+</div>
+<div class="cards-wrap" id="cards-wrap"></div>
+<div id="empty-state" class="empty-state" style="display:none"><div class="empty-icon">🔎</div><div class="empty-title">Sin resultados</div><p>Prueba con otro RIN, medida o borra el texto.</p></div>
+<div class="modal-overlay" id="wha-modal" onclick="W.closeIfBg(event)">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-title">📲 Enviar por WhatsApp</div>
+    <div class="modal-sub">Edita los datos y abre WhatsApp para elegir el contacto.</div>
+    <div class="preview-card">
+      <div class="prev-brand" id="pv-brand">—</div>
+      <div class="prev-medida" id="pv-medida">—</div>
+      <div class="prev-equiv" id="pv-equiv"></div>
+      <div class="prev-row">
+        <div class="prev-item"><span class="prev-lbl">Disponibilidad</span><span class="prev-val" id="pv-disp">—</span></div>
+        <div class="prev-sep"></div>
+        <div class="prev-item"><span class="prev-lbl">Tu precio</span><span class="prev-val" id="pv-precio">—</span></div>
+        <div class="prev-sep"></div>
+        <div class="prev-item"><span class="prev-lbl">Modelo</span><span class="prev-val" id="pv-modelo">—</span></div>
+      </div>
+      <div class="prev-footer"><span id="pv-vendedor">Tu nombre</span> · <span id="pv-empresa">Tu empresa</span><div class="prev-link" id="pv-link"></div></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Tu nombre</label><input type="text" id="wha-nombre" placeholder="Nombre vendedor" oninput="W.preview()"></div>
+      <div class="form-group"><label>Tu empresa</label><input type="text" id="wha-empresa" placeholder="Distribuidora / empresa" oninput="W.preview()"></div>
+    </div>
+    <div class="form-group"><label>Precio a ofrecer (USD)</label><input type="text" id="wha-precio" placeholder="Ej: $1,200.00" oninput="W.preview()"></div>
+    <button class="btn-abrir-wha" onclick="W.enviar()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.553 4.122 1.522 5.858L.057 23.57a.5.5 0 00.611.637l5.9-1.543A11.935 11.935 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.658-.52-5.166-1.424l-.369-.22-3.503.917.933-3.408-.241-.38A9.944 9.944 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+      Abrir WhatsApp y elegir contacto
+    </button>
+    <p class="wha-hint">Al tocar el botón se abre WhatsApp con el mensaje listo.<br>Tú eliges a quién enviárselo.</p>
+    <button class="btn-cancelar" onclick="W.close()">Cancelar</button>
+  </div>
+</div>
+<script>
+var RAW=__DATA_JSON__;
+var D=RAW.map(function(r){var inv=(r.INVENTARIO==='NO DISP'||!r.INVENTARIO)?0:(parseInt(r.INVENTARIO)||0);return Object.assign({},r,{RIN_N:parseFloat(r.RIN)||0,INV_N:inv,PL_N:parseFloat((r.P_LISTA||'').replace(/[$,]/g,''))||0,PS_N:parseFloat((r.P_SUG||'').replace(/[$,]/g,''))||0,DISP:inv>0});});
+var TOTAL=D.length,STOCK=D.filter(function(r){return r.DISP;}).length;
+document.getElementById('stat-total').textContent=TOTAL;
+document.getElementById('stat-stock').textContent=STOCK;
+document.getElementById('stock-lbl').textContent=STOCK+' referencias con existencia';
+document.getElementById('stat-visible').textContent=TOTAL;
+document.getElementById('res-num').textContent=TOTAL;
+var F=(function(){
+var rinA='',medA='',equivA='';
+function byRin(){return rinA?D.filter(function(r){return r.RIN===rinA;}):D;}
+function byRinMed(){return byRin().filter(function(r){return !medA||r.MEDIDA===medA;});}
+function byRinEquiv(){return byRin().filter(function(r){return !equivA||r.EQUIVALENCIA===equivA;});}
+function uniq(arr,field){var seen={},out=[];arr.forEach(function(r){if(r[field]&&!seen[r[field]]){seen[r[field]]=true;out.push(r[field]);}});return out.sort();}
+function fillSel(id,vals,ph){var el=document.getElementById(id),prev=el.value;el.innerHTML='<option value="">'+ph+'</option>';vals.forEach(function(v){el.appendChild(new Option(v,v));});if(prev&&vals.indexOf(prev)!==-1)el.value=prev;else el.value='';return el.value;}
+function refreshMods(sub){var mod=document.getElementById('f-modelo').value,vals=uniq(sub,'MODELO'),el=document.getElementById('f-modelo');el.innerHTML='<option value="">Modelo / Gama</option>';vals.forEach(function(v){el.appendChild(new Option(v,v));});if(mod&&vals.indexOf(mod)!==-1)el.value=mod;else el.value='';}
+function onRin(val){rinA=val;medA='';equivA='';var sub=byRin();fillSel('f-medida',uniq(sub,'MEDIDA'),'Medida radial');fillSel('f-equiv',uniq(sub,'EQUIVALENCIA'),'Medida equivalente');refreshMods(sub);render();}
+function onMedida(){medA=document.getElementById('f-medida').value;equivA='';var sub=byRinMed();fillSel('f-equiv',uniq(sub,'EQUIVALENCIA'),'Medida equivalente');refreshMods(sub.length?sub:byRin());render();}
+function onEquiv(){equivA=document.getElementById('f-equiv').value;medA='';var sub=byRinEquiv();fillSel('f-medida',uniq(sub,'MEDIDA'),'Medida radial');refreshMods(sub.length?sub:byRin());render();}
+function onTexto(){render();}
+function getFilas(){var texto=document.getElementById('f-texto').value.toLowerCase().trim(),medida=document.getElementById('f-medida').value,equiv=document.getElementById('f-equiv').value,marca=document.getElementById('f-marca').value,modelo=document.getElementById('f-modelo').value,soloD=document.getElementById('f-solo-disp').checked;return D.filter(function(r){if(rinA&&r.RIN!==rinA)return false;if(medida&&r.MEDIDA!==medida)return false;if(equiv&&r.EQUIVALENCIA!==equiv)return false;if(marca&&r.MARCA!==marca)return false;if(modelo&&r.MODELO!==modelo)return false;if(soloD&&!r.DISP)return false;if(texto){var h=(r.MEDIDA+r.MODELO+r.DESCRIPCION+r.CAI+r.MSPN+r.EQUIVALENCIA).toLowerCase();if(h.indexOf(texto)===-1)return false;}return true;}).sort(function(a,b){if(b.DISP!==a.DISP)return(b.DISP?1:0)-(a.DISP?1:0);if(a.RIN_N!==b.RIN_N)return a.RIN_N-b.RIN_N;return a.MEDIDA.localeCompare(b.MEDIDA);});}
+function render(){var filas=getFilas();document.getElementById('stat-visible').textContent=filas.length;document.getElementById('res-num').textContent=filas.length;var wrap=document.getElementById('cards-wrap'),empty=document.getElementById('empty-state');if(!filas.length){wrap.innerHTML='';empty.style.display='block';return;}empty.style.display='none';wrap.innerHTML=filas.map(cardHTML).join('');}
+function limpiar(){rinA='';medA='';equivA='';document.getElementById('f-texto').value='';document.getElementById('f-marca').value='';document.getElementById('f-solo-disp').checked=false;document.querySelectorAll('.chip-rin').forEach(function(b){b.classList.remove('active');});var t=document.querySelector('.chip-rin[data-rin=""]');if(t)t.classList.add('active');fillSel('f-medida',uniq(D,'MEDIDA'),'Medida radial');fillSel('f-equiv',uniq(D,'EQUIVALENCIA'),'Medida equivalente');refreshMods(D);render();}
+return{onRin:onRin,onMedida:onMedida,onEquiv:onEquiv,onTexto:onTexto,render:render,limpiar:limpiar};
+})();
+function cardHTML(r){
+var inv=r.DISP?'<div class="inv-badge disp"><span class="inv-label">Disponible</span><span class="inv-num">'+(r.INV_SHOW||r.INVENTARIO)+'</span></div>':'<div class="inv-badge nodisp"><span class="inv-label">Sin stock</span><span class="inv-num">—</span></div>';
+var precios;
+if(r.P_LISTA&&r.P_LISTA!=='-'){var of=r.EN_LISTA?'<div class="precio-oficial">✓ Lista 2026</div>':'';var sg=(r.P_SUG&&r.P_SUG!=='-')?r.P_SUG:'—';precios='<div class="precio-bloque"><span class="precio-tag">Precio de lista</span><span class="precio-val">'+r.P_LISTA+'</span>'+of+'</div><div class="precio-sep"></div><div class="precio-bloque precio-sug"><span class="precio-tag">Precio sugerido</span><span class="precio-val">'+sg+'</span></div>';}else{precios='<span class="precio-sin">Sin precio oficial registrado</span>';}
+var mCls=r.MARCA==='MICHELIN'?'marca-m':r.MARCA==='KLEBER'?'marca-k':'marca-o';
+var equiv=r.EQUIVALENCIA?'<div class="medida-equiv">≡ '+r.EQUIVALENCIA+'</div>':'';
+var ficha=(r.LINK&&r.LINK!==''&&r.LINK!=='nan'&&r.LINK!=='None')?'<a class="btn-ficha" href="'+r.LINK+'" target="_blank">📄 Ficha</a>':'<span class="btn-ficha-dis">Sin ficha</span>';
+var enc=btoa(unescape(encodeURIComponent(JSON.stringify({marca:r.MARCA,medida:r.MEDIDA,equiv:r.EQUIVALENCIA,modelo:r.MODELO,disp:r.DISP,invShow:r.INV_SHOW||r.INVENTARIO,link:r.LINK}))));
+return '<div class="card '+(r.DISP?'disponible':'no-disp')+'">'+'<div class="card-header"><div class="rin-badge">RIN '+r.RIN+'</div><div class="card-medidas"><div class="medida-radial">'+r.MEDIDA+'</div>'+equiv+'</div>'+inv+'</div>'+'<div class="card-precios">'+precios+'</div>'+'<div class="card-info"><span class="modelo-text">'+r.MODELO+'</span><span class="marca-chip '+mCls+'">'+(r.MARCA||'—')+'</span></div>'+'<div class="card-footer"><span class="codigos">CAI <span class="cod-val">'+r.CAI+'</span> · MSPN <span class="cod-val">'+(r.MSPN||'—')+'</span></span><div class="btns-footer">'+ficha+'<button class="btn-wha" onclick="W.open(\''+enc+'\')">📲 WhatsApp</button></div></div>'+'</div>';
+}
+(function buildChips(){var rins=[],seen={};D.forEach(function(r){if(r.RIN&&!seen[r.RIN]){seen[r.RIN]=true;rins.push(r.RIN);}});rins.sort(function(a,b){return parseFloat(a)-parseFloat(b);});var el=document.getElementById('rin-chips');function chip(label,val,active){var b=document.createElement('button');b.className='chip-rin'+(active?' active':'');b.dataset.rin=val;b.textContent=label;b.addEventListener('click',function(){document.querySelectorAll('.chip-rin').forEach(function(x){x.classList.remove('active');});b.classList.add('active');F.onRin(val);});return b;}el.appendChild(chip('Todos','',true));rins.forEach(function(v){el.appendChild(chip('R'+v,v,false));});})();
+(function initSelects(){function uniq(arr,field){var seen={},out=[];arr.forEach(function(r){if(r[field]&&!seen[r[field]]){seen[r[field]]=true;out.push(r[field]);}});return out.sort();}var fM=document.getElementById('f-medida');uniq(D,'MEDIDA').forEach(function(v){fM.appendChild(new Option(v,v));});var fE=document.getElementById('f-equiv');uniq(D,'EQUIVALENCIA').forEach(function(v){fE.appendChild(new Option(v,v));});var fMo=document.getElementById('f-modelo');uniq(D,'MODELO').forEach(function(v){fMo.appendChild(new Option(v,v));});})();
+var W=(function(){var item=null;var sn=localStorage.getItem('wha_n')||'',se=localStorage.getItem('wha_e')||'';if(sn)document.getElementById('wha-nombre').value=sn;if(se)document.getElementById('wha-empresa').value=se;
+function open(enc){try{item=JSON.parse(decodeURIComponent(escape(atob(enc))));}catch(e){return;}document.getElementById('pv-brand').textContent=item.marca||'—';document.getElementById('pv-medida').textContent=item.medida||'—';document.getElementById('pv-equiv').textContent=item.equiv?'≡ '+item.equiv:'';document.getElementById('pv-modelo').textContent=item.modelo||'—';document.getElementById('pv-disp').textContent=item.disp?item.invShow:'Sin stock';document.getElementById('pv-link').textContent=(item.link&&item.link!=='nan'&&item.link!=='None')?item.link:'';preview();document.getElementById('wha-modal').classList.add('open');document.body.style.overflow='hidden';}
+function close(){document.getElementById('wha-modal').classList.remove('open');document.body.style.overflow='';}
+function closeIfBg(e){if(e.target===document.getElementById('wha-modal'))close();}
+function preview(){var n=document.getElementById('wha-nombre').value||'Tu nombre',e=document.getElementById('wha-empresa').value||'Tu empresa',p=document.getElementById('wha-precio').value||'—';document.getElementById('pv-vendedor').textContent=n;document.getElementById('pv-empresa').textContent=e;document.getElementById('pv-precio').textContent=p;localStorage.setItem('wha_n',document.getElementById('wha-nombre').value);localStorage.setItem('wha_e',document.getElementById('wha-empresa').value);}
+function enviar(){if(!item)return;var n=document.getElementById('wha-nombre').value||'Vendedor',e=document.getElementById('wha-empresa').value||'',p=document.getElementById('wha-precio').value||'';var dispTxt=item.disp?item.invShow+' ✅':'Sin stock ❌';var precioTxt=p?'\n💲 *Precio:* '+p+' USD':'';var linkTxt=(item.link&&item.link!==''&&item.link!=='nan'&&item.link!=='None')?'\n📄 *Ficha técnica:* '+item.link:'';var empTxt=e?e+' · ':'';var msg='🚜 *Llanta Agrícola · '+(item.marca||'')+'*\n━━━━━━━━━━━━━━━━━\n📐 *Medida:* '+item.medida+(item.equiv?' / '+item.equiv:'')+'\n🏷️ *Modelo:* '+(item.modelo||'')+'\n📦 *Disponibilidad:* '+dispTxt+precioTxt+linkTxt+'\n━━━━━━━━━━━━━━━━━\n👤 '+n+'\n🏢 '+empTxt+'Distribuidor Autorizado';window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');close();}
+return{open:open,close:close,closeIfBg:closeIfBg,preview:preview,enviar:enviar};
+})();
+F.render();
+</script>
+</body>
+</html>
