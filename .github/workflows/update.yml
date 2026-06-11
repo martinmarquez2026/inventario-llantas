@@ -1,0 +1,41 @@
+name: Actualizar inventario
+
+on:
+  push:
+    paths:
+      - 'supply.xlsx'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependencias
+        run: pip install pandas openpyxl
+
+      - name: Generar portal
+        run: python build.py
+
+      - name: Publicar index.html
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Guardar cambios en el repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --staged --quiet || git commit -m "Portal actualizado - $(date +'%Y-%m-%d')"
+          git push
